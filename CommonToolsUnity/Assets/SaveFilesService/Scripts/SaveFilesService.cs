@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -89,6 +87,20 @@ namespace SaveFiles
                 Directory.CreateDirectory(folder);
         }
 
+        /// <summary>Return an array of file paths in the default or custom directory</summary>
+        /// <param name="customFolder">leave null to use default</param>
+        public static string[] GetFilePaths(string customFolder = null)
+        {
+            string folder = string.Empty;
+            if (string.IsNullOrEmpty(customFolder))
+                folder = Path.Combine(Application.persistentDataPath, DEFAULT_FOLDER);
+            else
+                folder = Path.Combine(Application.persistentDataPath, customFolder);
 
+            if (Directory.Exists(folder))
+                return Directory.GetFiles(folder);
+            else
+                return null;
+        }
     }
 }
