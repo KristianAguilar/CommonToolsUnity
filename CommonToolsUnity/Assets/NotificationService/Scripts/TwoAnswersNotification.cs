@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace NotificationService
+namespace Services
 {
     public class TwoAnswersNotification : MonoBehaviour
     {
@@ -24,7 +24,7 @@ namespace NotificationService
 
         /// <summary>Use the left button options to setup the ui prefab</summary>
         /// <param name="config"></param>
-        public void Setup(NotificationConfig config)
+        public void Setup(TwoOptionsConfig config)
         {
             _message.text = config.message;
             _iconImg.sprite = config.sprite;

@@ -10,6 +10,10 @@ namespace SaveFiles
     {
         private static string DEFAULT_FOLDER = "AppFiles";
         private static string SERVICE_NAME = "<color=cyan>SaveFilesService</color>";
+        /// <summary>
+        /// Set true to show all the debug logs in the console.
+        /// </summary>
+        public static bool showDebugLogs = false;
 
         /// <summary>Try to load a json data file if exist and load to the given class</summary>
         /// <typeparam name="T">Data class type to save</typeparam>
@@ -26,12 +30,14 @@ namespace SaveFiles
             File.WriteAllText(fileName, jsonTxt);
             if (File.Exists(fileName))
             {
-                Debug.Log($"{SERVICE_NAME}: File saved with success! path: {fileName}.");
+                if (showDebugLogs)
+                    Debug.Log($"{SERVICE_NAME}: File saved with success! path: {fileName}.");
                 return true;
             }
             else
             {
-                Debug.LogError($"{SERVICE_NAME}: Error on save the file at path: {fileName}.");
+                if (showDebugLogs)
+                    Debug.LogError($"{SERVICE_NAME}: Error on save the file at path: {fileName}.");
                 return false;
             }
         }
@@ -50,13 +56,15 @@ namespace SaveFiles
             if (!File.Exists(fileName))
             {
                 data = default;
-                Debug.Log($"{SERVICE_NAME}: file name not found: {fileName}");
+                if (showDebugLogs)
+                    Debug.Log($"{SERVICE_NAME}: file name not found: {fileName}");
                 return false;
             }
             // File exist, load and return data
             string jsonTxt = File.ReadAllText(fileName);
             data = JsonUtility.FromJson<T>(jsonTxt);
-            Debug.Log($"{SERVICE_NAME}: file name loaded with success: {fileName}");
+            if (showDebugLogs)
+                Debug.Log($"{SERVICE_NAME}: file name loaded with success: {fileName}");
             return true;
         }
 

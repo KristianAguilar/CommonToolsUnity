@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 
-namespace NotificationService
+namespace Services
 {
     /// <summary>
     /// Service that allow to show notifications of different types in screen,
@@ -52,7 +52,7 @@ namespace NotificationService
 
         /// <summary> Arise a notification in the screen with one message and button option</summary>
         /// <param name="config">config with the necessary data to load 1 button. Can have empty fields</param>
-        public void AriseSimpleNotification(NotificationConfig config)
+        public void AriseSimpleNotification(OneOptionConfig config)
         {
             if (_notificationInstance != null)
             {
@@ -65,8 +65,10 @@ namespace NotificationService
             SimpleNotification simpleNotification = _notificationInstance.GetComponent<SimpleNotification>();
             
             // fix notification fields
-            config.onLeftButtonPress += CloseNotification;
-            config.sprite = GetNotificationSprite(config.type);
+            config.onButtonPress += CloseNotification;
+
+            if (config.iconSprite == null)
+                config.iconSprite = GetNotificationSprite(config.type);
             
             // setup the ui
             simpleNotification.Setup(config);
@@ -74,7 +76,7 @@ namespace NotificationService
 
         /// <summary> Arise a notification in screen with 2 buttons</summary>
         /// <param name="config">config with the necessary data to load 2 button info</param>
-        public void AriseTwoAnswersNotification(NotificationConfig config)
+        public void AriseTwoAnswersNotification(TwoOptionsConfig config)
         {
             if (_notificationInstance != null)
             {
@@ -114,7 +116,7 @@ namespace NotificationService
     /// <summary>
     /// Configuration struct with the data to load a notification
     /// </summary>
-    public struct NotificationConfig
+    public struct TwoOptionsConfig
     {
         public string message;
         public string leftButtonText;
@@ -123,6 +125,37 @@ namespace NotificationService
         public UnityAction onRightButtonPress;
         public NotificationType type;
         public Sprite sprite;
+        public bool hideOverlay;
+    }
+
+    /// <summary>
+    /// Config to create a simple notification
+    /// </summary>
+    public struct OneOptionConfig
+    {
+        /// <summary>
+        /// Main message show to the user.
+        /// </summary>
+        public string message;
+        /// <summary>
+        /// Text in the button text.
+        /// </summary>
+        public string buttonText;
+        /// <summary>
+        /// Action on press the button. autoclose is already included.
+        /// </summary>
+        public UnityAction onButtonPress;
+        /// <summary>
+        /// Type info, warning, or error.
+        /// </summary>
+        public NotificationType type;
+        /// <summary>
+        /// Can use a default sprite in the notification icon. Null use default sprites.
+        /// </summary>
+        public Sprite iconSprite;
+        /// <summary>
+        /// True for hide the background
+        /// </summary>
         public bool hideOverlay;
     }
 

@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace NotificationService
+namespace Services
 {
     /// <summary>
     /// Script to test arise notifications
@@ -27,18 +25,24 @@ namespace NotificationService
 
         private void Simple()
         {
-            NotificationService.Instance.AriseSimpleNotification(new NotificationConfig
+            NotificationService.Instance.AriseSimpleNotification(new OneOptionConfig
             {
                 message = "Prueba notificación simple",
-                leftButtonText = "Continuar",
+                buttonText = "Continuar",
                 type = NotificationType.Warning,
-                // onLeftButtonPress = here add custom actions, also will close the notification.
+                onButtonPress = ButtonPressAlert,
+                //hideOverlay = true // default false => show bg overlay
             });
+        }
+
+        private void ButtonPressAlert()
+        {
+            Debug.Log("Simple notification close");
         }
 
         private void TwoAnswers()
         {
-            NotificationService.Instance.AriseTwoAnswersNotification(new NotificationConfig
+            NotificationService.Instance.AriseTwoAnswersNotification(new TwoOptionsConfig
             {
                 message = "Prueba notificación con dos opciones",
                 leftButtonText = "Aceptar",
