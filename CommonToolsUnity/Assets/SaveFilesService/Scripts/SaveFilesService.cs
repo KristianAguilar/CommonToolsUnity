@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace SaveFiles
@@ -95,20 +97,27 @@ namespace SaveFiles
                 Directory.CreateDirectory(folder);
         }
 
-        /// <summary>Return an array of file paths in the default or custom directory</summary>
-        /// <param name="customFolder">leave null to use default</param>
-        public static string[] GetFilePaths(string customFolder = null)
+        /// <summary>Find all the files in the default or custom folder and return the names in a list.</summary>
+        /// <param name="customFolder">custom folder to search, null to use default folder namr</param>
+        /// <returns>list of file names in the given folder.</returns>
+        public static List<string> GetFilesName(string customFolder = null)
         {
-            string folder = string.Empty;
-            if (string.IsNullOrEmpty(customFolder))
-                folder = Path.Combine(Application.persistentDataPath, DEFAULT_FOLDER);
-            else
-                folder = Path.Combine(Application.persistentDataPath, customFolder);
+            string folderPath = customFolder != null ?
+                Path.Combine(Application.persistentDataPath, customFolder) :
+                Path.Combine(Application.persistentDataPath, DEFAULT_FOLDER);
 
-            if (Directory.Exists(folder))
-                return Directory.GetFiles(folder);
-            else
-                return null;
+            if (!Directory.Exists(folderPath))
+            {
+                return new List<string>();
+            }
+
+            List<string> pathFiles = Directory.GetFiles(folderPath).ToList();
+            List<string> names = new List<string>();
+            foreach (string path in pathFiles)
+            {
+                names.Add(Path.GetFileName(path));
+            }
+            return names;
         }
     }
 }
