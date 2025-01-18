@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/ThridPersonDollTemplate/Scenes/Demo.unity
+    guid: efc3c5a3a1e958043bebf5d364cf9576
   m_configObjects: {}
