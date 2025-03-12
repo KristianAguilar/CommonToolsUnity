@@ -31,7 +31,6 @@ namespace DialogSystem
         private GameObject dialogIconInstance;
 
 
-
         private void OnTriggerStay(Collider other)
         {
             if (!DialogService.inDialog && other.gameObject.CompareTag("Player"))

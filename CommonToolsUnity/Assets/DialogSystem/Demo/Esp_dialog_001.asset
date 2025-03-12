@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 321247c56a31d834c904d2de5ebec876, type: 3}
+  m_Name: Esp_dialog_001
+  m_EditorClassIdentifier: 
+  id: dialog_001
+  lang: 34
+  pages:
+  - pageId: page_1
+    headerName: Marcus
+    position: 2
+    content: Hola! bienvenido a mi sistema de dialogo.
+  - pageId: page_2
+    headerName: Player
+    position: 3
+    content: "Esto lo programaste t\xFA?"
+  - pageId: page_3
+    headerName: Marcus
+    position: 2
+    content: No amigo, no ves que soy una capsula sin manos
+  - pageId: page_4
+    headerName: Player
+    position: 3
+    content: "Aaaa cierto, mala m\xEDa."
