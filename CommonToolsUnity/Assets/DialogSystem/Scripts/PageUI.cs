@@ -45,6 +45,8 @@ namespace DialogSystem
         /// </summary>
         private bool allowSkipTyping;
 
+        private const string HTML_ALPHA = "<color=#00000000>";
+
         /// <summary>
         /// Action on the current page typing finish, you can send the next page id if its a option page.
         /// Send a empty string as default value.
@@ -87,14 +89,19 @@ namespace DialogSystem
             if (currentPage == null)
                 yield break;
 
-            content.text = "";
             finishTypingUI.SetActive(false);
+            int alphaIndex = 1;
+
+            content.text = ""; 
             foreach (char letter in currentPage.content)
             {
                 if (currentPage == null)
                     yield break;
 
-                content.text += letter;
+                content.text = currentPage.content;
+                string textEdited = content.text.Insert(alphaIndex, HTML_ALPHA);
+                content.text = textEdited;
+                alphaIndex++;
                 yield return new WaitForSeconds(typingCooldown);
             }
 
@@ -107,7 +114,7 @@ namespace DialogSystem
             {
                 if ((Input.GetAxis("Fire1") != 0 || Input.GetKeyUp(KeyCode.E) ) && allowSkipTyping)
                 {
-                    if (content.text != currentPage.content)
+                    if (!finishTypingUI.activeSelf)
                     {
                         SkipTyping();
                         allowSkipTyping = false;
