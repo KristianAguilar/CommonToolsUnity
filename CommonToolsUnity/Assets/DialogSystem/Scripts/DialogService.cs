@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -48,6 +50,10 @@ namespace DialogSystem
         /// The next page to show after the current. null means dialog finish.
         /// </summary>
         private Page nextPage;
+        /// <summary>
+        /// Allow others request dialogs, used to avoid finish and request a dialog with the same input.
+        /// </summary>
+        private bool allowRequestDialogs;
 
         // Start is called before the first frame update
         void Start()
@@ -57,6 +63,7 @@ namespace DialogSystem
             pageUI = pageInstance.GetComponent<PageUI>();
             pageUI.OnPageFinish += SetupNextPage;
             currentPages = new List<Page>();
+            allowRequestDialogs = true;
         }
 
         /// <summary>
@@ -65,6 +72,9 @@ namespace DialogSystem
         /// <param name="dialogId">unique id to find the dialog class</param>
         private void RequestNewDialog(string dialogId)
         {
+            if (!allowRequestDialogs)
+                return;
+            allowRequestDialogs = false;
             Debug.Log($"{SERVICE_NAME}Starting to search and show dialog: {dialogId}");
             
             DialogConfig dialog = Dialogs.Find(d => d.id == dialogId);
@@ -132,11 +142,17 @@ namespace DialogSystem
 
         private void FinishDialog()
         {
-            inDialog = false;
             currentDialog = null;
             nextPage = null;
             currentPages = new List<Page>();
+            inDialog = false;
+            StartCoroutine(AllowNewDialog());
         }
 
+        private IEnumerator AllowNewDialog()
+        {
+            yield return new WaitForSeconds(1f);
+            allowRequestDialogs = true;
+        }
     }
 }

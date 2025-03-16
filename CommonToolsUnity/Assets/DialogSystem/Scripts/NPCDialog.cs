@@ -113,7 +113,7 @@ namespace DialogSystem
             if (!DialogService.inDialog && currenDialogArise == this)
             {
                 // only here read player input
-                if (Input.GetAxis("Fire1") != 0)
+                if (Input.GetAxis("Fire1") != 0 || Input.GetKeyUp(KeyCode.E))
                 {
                     DialogService.OnRequestStartDialog?.Invoke(dialogId);
                 }

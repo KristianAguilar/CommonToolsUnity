@@ -31,15 +31,19 @@ namespace DialogSystem
         /// Speed of typing a word after other.
         /// </summary>
         [SerializeField, Range(0.001f, 1f)] private float typingCooldown = 0.04f;
+        /// <summary>
+        /// Seconds to allow the user skip the current page
+        /// </summary>
+        [SerializeField] private float skipDialogTime = 0.5f;
 
         /// <summary>
         /// Current Page in the screen.
         /// </summary>
         private Page currentPage;
         /// <summary>
-        /// True only when the content was wrote.
+        /// True if allow the user to skip the current dialog. Used to avoid multiple fire 1 input.
         /// </summary>
-        private bool finishShowing = false;
+        private bool allowSkipTyping;
 
         /// <summary>
         /// Action on the current page typing finish, you can send the next page id if its a option page.
@@ -52,7 +56,7 @@ namespace DialogSystem
             mainPanel.SetActive(false);
             currentPage = null;
             finishTypingUI.SetActive(false);
-            finishShowing = false;
+            allowSkipTyping = false;
         }
 
         /// <summary>
@@ -70,6 +74,8 @@ namespace DialogSystem
             }
 
             header.text = currentPage.headerName;
+            StartCoroutine(AllowSkipTypingCooldown());
+            allowSkipTyping = false;
             StartCoroutine(TypingContent());
         }
 
@@ -81,15 +87,14 @@ namespace DialogSystem
             if (currentPage == null)
                 yield break;
 
-            content.text = currentPage.content;
+            content.text = "";
             finishTypingUI.SetActive(false);
-            finishShowing = false;
-            content.color =  new Color(content.color.r, content.color.g, content.color.b, 0f);
             foreach (char letter in currentPage.content)
             {
                 if (currentPage == null)
                     yield break;
 
+                content.text += letter;
                 yield return new WaitForSeconds(typingCooldown);
             }
 
@@ -100,10 +105,14 @@ namespace DialogSystem
         {
             if (currentPage != null)
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if ((Input.GetAxis("Fire1") != 0 || Input.GetKeyUp(KeyCode.E) ) && allowSkipTyping)
                 {
-                    if (!finishShowing)
+                    if (content.text != currentPage.content)
+                    {
                         SkipTyping();
+                        allowSkipTyping = false;
+                        StartCoroutine(AllowSkipTypingCooldown());
+                    }
                     else
                         PageFinish();
                 }
@@ -129,6 +138,12 @@ namespace DialogSystem
             currentPage = null;
             finishTypingUI.SetActive(false);
             OnPageFinish?.Invoke(string.Empty);
+        }
+
+        private IEnumerator AllowSkipTypingCooldown()
+        {
+            yield return new WaitForSeconds(skipDialogTime);
+            allowSkipTyping = true;
         }
     }
 }
