@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -79,6 +80,7 @@ namespace DialogSystem
             StartCoroutine(AllowSkipTypingCooldown());
             allowSkipTyping = false;
             StartCoroutine(TypingContent());
+            SetupPagePosition(page.position);
         }
 
         /// <summary>
@@ -151,6 +153,47 @@ namespace DialogSystem
         {
             yield return new WaitForSeconds(skipDialogTime);
             allowSkipTyping = true;
+        }
+
+        /// <summary>
+        /// Change the position of the main panel depending on the page config.
+        /// </summary>
+        /// <param name="position">position in the screen where the dialog will be show</param>
+        private void SetupPagePosition(PagePosition position)
+        {
+            switch (position)
+            {
+                case PagePosition.LeftBottom:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(-250, -150, 0f);
+                    break;
+                case PagePosition.MiddleBottom:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(0f, -150, 0f);
+                    break;
+                case PagePosition.RightBottom:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(250, -150, 0f);
+                    break;
+
+                case PagePosition.LeftMiddle:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(-250, 0f, 0f);
+                    break;
+                case PagePosition.MiddleMiddle:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(0f, 0f, 0f);
+                    break;
+                case PagePosition.RightMiddle:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(250, 0f, 0f);
+                    break;
+
+                case PagePosition.LeftTop:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(-250, 150f, 0f);
+                    break;
+                case PagePosition.MiddleTop:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(0f, 150f, 0f);
+                    break;
+                case PagePosition.RightTop:
+                    mainPanel.GetComponent<RectTransform>().localPosition = new Vector3(250, 150f, 0f);
+                    break;
+
+            }
         }
     }
 }

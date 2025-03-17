@@ -21,7 +21,7 @@ MonoBehaviour:
     content: Hola! bienvenido a mi sistema de dialogo.
   - pageId: page_2
     headerName: Player
-    position: 3
+    position: 5
     content: "Esto lo programaste t\xFA?"
   - pageId: page_3
     headerName: Marcus
@@ -29,5 +29,5 @@ MonoBehaviour:
     content: No amigo, no ves que soy una capsula sin manos
   - pageId: page_4
     headerName: Player
-    position: 3
+    position: 5
     content: "Aaaa cierto, mala m\xEDa."
